@@ -71,33 +71,39 @@ public class Principal {
 
         episodios.forEach(System.out::println);
 
-        System.out.println("Digite um trecho do titulo do episódio");
+//        System.out.println("Digite um trecho do titulo do episódio");
+//
+//        var trechoTitulo = leitura.nextLine();
+//        Optional<Episodio> episodioBuscado = episodios.stream()
+//                .filter(e -> e.getTitulo().toUpperCase().contains(trechoTitulo.toUpperCase()))
+//                .findFirst();
+//        if(episodioBuscado.isPresent()) {
+//            System.out.println("Episódio encontrado!");
+//            System.out.println("Temporada: " + episodioBuscado.get().getTemporada());
+//        } else {
+//            System.out.println("Episódio não encontrado");
+//        }
+//
+//        System.out.println("A partir de que ano você deseja ver os episódios?");
+//        var ano = leitura.nextInt();
+//        leitura.nextLine();
+//
+//        LocalDate dataBusca = LocalDate.of(ano, 1,1);
+//
+//        DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+//
+//        episodios.stream()
+//                .filter(e -> e.getDataLancamento() != null && e.getDataLancamento().isAfter(dataBusca))
+//                .forEach(e -> System.out.println(
+//                        "Temporada: " + e.getTemporada() +
+//                                "Episódio: " + e.getTitulo() +
+//                                "Data Laçamento: " + e.getDataLancamento().format(formatador)
+//                ));
 
-        var trechoTitulo = leitura.nextLine();
-        Optional<Episodio> episodioBuscado = episodios.stream()
-                .filter(e -> e.getTitulo().toUpperCase().contains(trechoTitulo.toUpperCase()))
-                .findFirst();
-        if(episodioBuscado.isPresent()) {
-            System.out.println("Episódio encontrado!");
-            System.out.println("Temporada: " + episodioBuscado.get().getTemporada());
-        } else {
-            System.out.println("Episódio não encontrado");
-        }
-
-        System.out.println("A partir de que ano você deseja ver os episódios?");
-        var ano = leitura.nextInt();
-        leitura.nextLine();
-
-        LocalDate dataBusca = LocalDate.of(ano, 1,1);
-
-        DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
-        episodios.stream()
-                .filter(e -> e.getDataLancamento() != null && e.getDataLancamento().isAfter(dataBusca))
-                .forEach(e -> System.out.println(
-                        "Temporada: " + e.getTemporada() +
-                                "Episódio: " + e.getTitulo() +
-                                "Data Laçamento: " + e.getDataLancamento().format(formatador)
-                ));
+        Map<Integer, Double> avaliacoesPorTemporada = episodios.stream()
+                .filter(e -> e.getAvaliacao() > 0.0)
+                .collect(Collectors.groupingBy(Episodio::getTemporada,
+                        Collectors.averagingDouble(Episodio::getAvaliacao)));
+        System.out.println(avaliacoesPorTemporada);
     }
 }
